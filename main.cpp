@@ -40,6 +40,10 @@ int main() {
             program->operateTree();
             break;
 
+        case 'h':
+            program->operateHeap();
+            break;
+
         default:
             cout << "Invalid operation! Try again;" << endl;
             break;

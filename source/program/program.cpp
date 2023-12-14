@@ -790,3 +790,57 @@ void Program::operateBinarySearchTree() {
 
     } while (operation != 'x');
 }
+
+void Program::operateHeap() {
+    char operation;
+    int element, count;
+
+    cout << "THE HEAP OPERATIONS" << endl;
+    do {
+        cout << "Operation: ";
+        cin >> operation;
+
+        switch (operation) {
+            case 's':
+                if (heap->isEmpty())
+                    cout << "The heap is empty." << endl;
+                count = heap->getSize();
+                cout << "The heap has " << count << " elements." << endl;
+                break;
+
+            case 'm':
+                element = heap->getMin();
+                cout << "The minimum element is " << element << endl;
+                break;
+
+
+            case '+':
+                cin >> element;
+                heap->add(element);
+                break;
+
+            case '-':
+                try {
+                    element = heap->removeMin();
+                    cout << "The minimum element [" << element << "] is removed." << endl;
+                } catch (const exception& exception) {
+                    cout << "Nothing is removed." << endl;
+                }
+
+                break;
+
+            case 'p':
+                heap->print();
+                break;
+
+            case 'x':
+                cout << "exiting...";
+                break;
+
+            default:
+                cout << "Invalid operation! Try again;" << endl;
+                break;
+        }
+
+    } while (operation != 'x');
+}; 

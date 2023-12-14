@@ -51,7 +51,8 @@ public:
 
     int getElementAt(int position) {
         if (position < 1 || position > size)
-            throw logic_error("Position out of bounds.");
+            return -999;
+            //throw logic_error("Position out of bounds.");
 
         return array[position - 1];
     }

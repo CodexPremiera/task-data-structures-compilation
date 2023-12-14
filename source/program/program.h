@@ -27,6 +27,7 @@ class Program {
     IntDeque* deque;
     BinaryTree* binaryTree;
     BinarySearchTree* binarySearchTree;
+    Heap* heap;
 
 private:
     int* makePreorderArray();
@@ -45,6 +46,7 @@ public:
     void operateTree();
     void operateBinaryTree();
     void operateBinarySearchTree();
+    void operateHeap();
 
     void solveParenthesis();
 };
