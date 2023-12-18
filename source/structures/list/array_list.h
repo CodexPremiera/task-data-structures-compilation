@@ -169,14 +169,9 @@ public:
         for (current; current < size; current++) {
             if (array[current] == element)
                 countRemove++;
-            else {
-                array[precedent] = array[current];
-                precedent++;
-            }
+            else
+                array[precedent++] = array[current];
         }
-
-        for (current; current < capacity; current++)
-            array[current] = 0;
 
         size -= countRemove;
         checkCapacity();

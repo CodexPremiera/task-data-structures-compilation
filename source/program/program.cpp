@@ -617,13 +617,21 @@ void Program::operateBinaryTree() {
 }
 
 void Program::operateBinarySearchTree() {
+    binarySearchTree->add(8);
     binarySearchTree->add(4);
+    binarySearchTree->add(12);
     binarySearchTree->add(2);
     binarySearchTree->add(6);
+    binarySearchTree->add(10);
+    binarySearchTree->add(14);
     binarySearchTree->add(1);
     binarySearchTree->add(3);
     binarySearchTree->add(5);
     binarySearchTree->add(7);
+    binarySearchTree->add(9);
+    binarySearchTree->add(11);
+    binarySearchTree->add(13);
+    binarySearchTree->add(15);
     
     char operation;
     int element, parent, position, count, size;
@@ -693,6 +701,17 @@ void Program::operateBinarySearchTree() {
                         cin >> element;
                         count = binarySearchTree->getHeight(element);
                         cout << "Node of " << element << " has a height of " << count << endl;
+                        break;
+
+                    case 'p':
+                        cin >> element;
+                        count = binarySearchTree->getPredecessor(element);
+                        cout << "Predecessor of " << element << " is " << count << endl;
+                        break;
+                    case 'u':
+                        cin >> element;
+                        count = binarySearchTree->getSuccessor(element);
+                        cout << "Successor of " << element << " is " << count << endl;
                         break;
 
                     default:

@@ -17,10 +17,49 @@ private:
         return (origin && origin->left) ? getMinimum(origin->left) : origin;
     }
 
+    Node* getMaximum(Node* origin = nullptr) {
+        return (origin && origin->right) ? getMaximum(origin->right) : origin;
+    }
+
 public:
     explicit BinarySearchTree() {
         binaryTree = new BinaryTree();
         root = binaryTree->getRoot();
+    }
+
+    Node* getNode(int element) {
+        return getNode(element, this->binaryTree->getRoot());
+    }
+    Node* getNode(int element, Node* origin) {
+        if (!origin || origin->element == element)
+            return origin;
+
+        Node* nextNode = (element < origin->element) ? origin->left : origin->right;
+        return (nextNode) ? getNode(element, nextNode) : nullptr;
+    }
+
+    int getPredecessor(int element) {
+        return getPredecessor(getNode(element));
+    }
+    int getPredecessor(Node* node) {
+        if (node->left)
+            return getMaximum(node->left)->element;
+
+        while (node->isLeft())
+            node = node->parent;
+        return node->parent->element;
+    }
+
+    int getSuccessor(int element) {
+        return getSuccessor(getNode(element));
+    }
+    int getSuccessor(Node* node) {
+        if (node->right)
+            return getMinimum(node->right)->element;
+
+        while (node->isRight())
+            node = node->parent;
+        return node->parent->element;
     }
 
     bool add(int element) {
@@ -75,16 +114,8 @@ public:
     }
 
 
-    Node* getNode(int element) {
-        return getNode(element, getRoot());
-    }
-    Node* getNode(int element, Node* origin) {
-        if (!origin || origin->element == element)
-            return origin;
 
-        Node* nextNode = (element < origin->element) ? origin->left : origin->right;
-        return (nextNode) ? getNode(element, nextNode) : nullptr;
-    }
+
 
     Node* getRoot() {
         return binaryTree->getRoot();
