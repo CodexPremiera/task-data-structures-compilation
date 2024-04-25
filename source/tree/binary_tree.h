@@ -27,6 +27,7 @@ public:
         this->clearTree();
     }
 
+    /* ADD METHODS */
     Node* addRoot(int element) {
         if (this->root)
             throw logic_error("Root already exists.");
@@ -64,6 +65,7 @@ public:
         return parent->right;
     }
 
+    /* REMOVE METHODS */
     int remove(int target) {
         return remove(getNodeByElement(target));
     }
@@ -111,11 +113,13 @@ public:
         return 1 + clearedLeft + clearedRight;
     }
 
-    void setRoot(Node* root) {
-        this->root = root;
+
+    /* SET AND GET METHODS */
+    void setRoot(Node* newRoot) {
+        this->root = newRoot;
     }
-    void setSize(int size) {
-        this->size = size;
+    void setSize(int newSize) {
+        this->size = newSize;
     }
 
     Node* getRoot() {
@@ -169,6 +173,52 @@ public:
         return getNodeByElement(element)->getHeight();
     }
 
+
+    /* TRANSPOSITION METHODS */
+    void zig(Node* curr, bool isLeft) {
+        // check parent
+        Node* parent = curr->parent;
+        if (parent == nullptr)
+            throw runtime_error("Cannot perform zig if the parent node is null");
+
+        // handle grandparent
+        Node* grandparent = parent->parent;
+        if (grandparent == nullptr)
+            root = curr;
+        else if (parent->isLeft())
+            grandparent->left = curr;
+        else
+            grandparent->right = curr;
+        curr->parent = grandparent;
+
+        // handle child relationships
+        Node* detached;
+        if (isLeft) {
+            detached = curr->left;
+            curr->left = parent;
+            parent->right = detached;
+        } else {
+            detached = curr->right;
+            curr->right = parent;
+            parent->left = detached;
+        }
+
+        // handle parent relationships
+        if (detached != nullptr)
+            detached->parent = parent;
+        parent->parent = curr;
+    }
+
+    void zigLeft(Node* curr) {
+        zig(curr, true);
+    }
+
+    void zigRight(Node* curr) {
+        zig(curr, false);
+    }
+
+
+    /* TRAVERSAL METHODS */
     void preorderTraversal() {
         if (!this->root)
             cout << "Tree is empty." << endl;
@@ -180,7 +230,7 @@ public:
     }
     void preorderTraversal (Node* current, string padding) {
         if (current) {
-            string arrowConnector = "";
+            string arrowConnector;
             cout << padding;
 
             if (current->parent) {
@@ -207,7 +257,7 @@ public:
     void inorderTraversal(Node* current, string padding) {
         if (current) {
             string splitConnector = (current->left || current->right) ? " -|" : "";
-            string arrowConnector = "";
+            string arrowConnector;
 
             if (current->getDepth() > 1) {
                 if (current->parent->isLeft() && current->isRight() ||
@@ -231,6 +281,38 @@ public:
         }
     }
 
+    void inorderReversedTraversal() {
+        cout << "Inorder Reversed Traversal: " << endl;
+        inorderReversedTraversal(this->root, "");
+        cout << endl;
+    }
+    void inorderReversedTraversal(Node* current, string padding) {
+        if (current) {
+            string splitConnector = (current->left || current->right) ? " -|" : "";
+            string arrowConnector;
+
+            if (current->getDepth() > 1) {
+                if (current->parent->isLeft() && current->isRight() ||
+                    current->parent->isRight() && current->isLeft())
+                    padding += " |  ";
+                else
+                    padding += "    ";
+            }
+
+            if (current->parent) {
+                padding += "   ";
+                if (current->isRight())
+                    arrowConnector = " ,->";
+                else
+                    arrowConnector = " `->";
+            }
+
+            inorderReversedTraversal(current->right, padding);
+            cout << padding << arrowConnector << setw(2) << current->element << splitConnector << endl;
+            inorderReversedTraversal(current->left, padding);
+        }
+    }
+
     void postorderTraversal() {
         cout << "Postorder Traversal: " << endl;
         postorderTraversal(this->root, "");
@@ -238,7 +320,7 @@ public:
     }
     void postorderTraversal(Node* current, string padding) {
         if (current) {
-            string arrowConnector = "";
+            string arrowConnector;
 
             if (current->getDepth() > 1) {
                 if ( current->parent->isRight() && current->parent->hasSibling() )
@@ -265,8 +347,8 @@ public:
         breadthFirstTraversal(this->root);
         cout << endl;
     }
-    void breadthFirstTraversal(Node* origin) {
-        NodeQueue* queue = new NodeQueue();
+    static void breadthFirstTraversal(Node* origin) {
+        auto* queue = new NodeQueue();
         queue->enqueue(origin);
 
         while(!queue->isEmpty()) {

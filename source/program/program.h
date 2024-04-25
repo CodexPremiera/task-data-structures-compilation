@@ -33,8 +33,6 @@ private:
     int* makePreorderArray();
     int* makePostorderArray();
 
-    bool isBalancedParenthesis();
-
 public:
     Program();
 
@@ -47,8 +45,6 @@ public:
     void operateBinaryTree();
     void operateBinarySearchTree();
     void operateHeap();
-
-    void solveParenthesis();
 };
 
 

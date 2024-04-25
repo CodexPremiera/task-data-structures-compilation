@@ -37,7 +37,7 @@ struct Node {
 
     int getHeight() {
         if (!left && !right)
-            return 0;
+            return 1;
 
         int leftHeight = (left) ? left->getHeight() : 0;
         int rightHeight = (right) ? right->getHeight() : 0;
@@ -73,5 +73,15 @@ struct Node {
         if (parent)
             return this == parent->right;
         return false;
+    }
+
+    bool isLeaf() {
+        return !left && !right;
+    }
+
+    int getBalanceFactor() {
+        int leftHeight = (left) ? left->getHeight() : 0;
+        int rightHeight = (right) ? right->getHeight() : 0;
+        return leftHeight - rightHeight;
     }
 };

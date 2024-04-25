@@ -617,7 +617,7 @@ void Program::operateBinaryTree() {
 }
 
 void Program::operateBinarySearchTree() {
-    binarySearchTree->add(8);
+    /*binarySearchTree->add(8);
     binarySearchTree->add(4);
     binarySearchTree->add(12);
     binarySearchTree->add(2);
@@ -631,7 +631,17 @@ void Program::operateBinarySearchTree() {
     binarySearchTree->add(9);
     binarySearchTree->add(11);
     binarySearchTree->add(13);
-    binarySearchTree->add(15);
+    binarySearchTree->add(15);*/
+
+    binarySearchTree->add(2);
+    binarySearchTree->add(1);
+    binarySearchTree->add(4);
+    binarySearchTree->add(3);
+    binarySearchTree->add(7);
+    binarySearchTree->add(6);
+    binarySearchTree->add(8);
+    binarySearchTree->add(5);
+    binarySearchTree->add(10);
     
     char operation;
     int element, parent, position, count, size;
@@ -702,6 +712,11 @@ void Program::operateBinarySearchTree() {
                         count = binarySearchTree->getHeight(element);
                         cout << "Node of " << element << " has a height of " << count << endl;
                         break;
+                    case 'b':
+                        cin >> element;
+                        count = binarySearchTree->getNode(element)->getBalanceFactor();
+                        cout << "The balance factor of " << element << " is " << count << endl;
+                        break;
 
                     case 'p':
                         cin >> element;
@@ -756,6 +771,37 @@ void Program::operateBinarySearchTree() {
                         count = binarySearchTree->clearTree();
                         cout << "All " << count << " elements removed." << endl << endl;
                         break;
+                    default:
+                        cout << "Invalid operation! Try again;" << endl;
+                        break;
+                }
+                break;
+
+            case 'z':
+                cin >> operation >> element;
+                switch (operation) {
+                    case 'l':
+                        try {
+                            binarySearchTree->zigLeft(element);
+                            cout << " Zig Left done on " << element << endl;
+                        } catch (const runtime_error& error) {
+                            cout << " Zig Left failed on " << element << endl;
+                        }
+                        break;
+                    case 'r':
+                        try {
+                            binarySearchTree->zigRight(element);
+                            cout << " Zig Right done on " << element << endl;
+                        } catch (const runtime_error& error) {
+                            cout << " Zig Right can't be done on " << element << endl;
+                        }
+                        break;
+                    case 't':
+                         if (binarySearchTree->restructure(element))
+                             cout << "Restructure done at " << element << endl;
+                         else
+                             cout << "Restructure failed at " << element << endl;
+                         break;
                     default:
                         cout << "Invalid operation! Try again;" << endl;
                         break;

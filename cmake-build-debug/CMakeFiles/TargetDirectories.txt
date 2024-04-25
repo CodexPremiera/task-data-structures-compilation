@@ -1,3 +1,3 @@
-D:/PremieraAlpha/College/2nd Year - First Semester/CSIT221 - Data Structures and Algorithms/The_Finals-Review/cmake-build-debug/CMakeFiles/The_Finals_Review.dir
-D:/PremieraAlpha/College/2nd Year - First Semester/CSIT221 - Data Structures and Algorithms/The_Finals-Review/cmake-build-debug/CMakeFiles/edit_cache.dir
-D:/PremieraAlpha/College/2nd Year - First Semester/CSIT221 - Data Structures and Algorithms/The_Finals-Review/cmake-build-debug/CMakeFiles/rebuild_cache.dir
+D:/PremieraAlpha/College/2nd_Year-Second_Semester/CS244-Design_Analysis_of_Algorithms/Lesson_02-Data_Structures_Compilation/cmake-build-debug/CMakeFiles/The_Finals_Review.dir
+D:/PremieraAlpha/College/2nd_Year-Second_Semester/CS244-Design_Analysis_of_Algorithms/Lesson_02-Data_Structures_Compilation/cmake-build-debug/CMakeFiles/edit_cache.dir
+D:/PremieraAlpha/College/2nd_Year-Second_Semester/CS244-Design_Analysis_of_Algorithms/Lesson_02-Data_Structures_Compilation/cmake-build-debug/CMakeFiles/rebuild_cache.dir
