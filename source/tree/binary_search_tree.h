@@ -8,15 +8,6 @@ class BinarySearchTree {
     BinaryTree* binaryTree;
     Node* root;
 
-private:
-    Node* getMinimum(Node* origin = nullptr) {
-        return (origin && origin->left) ? getMinimum(origin->left) : origin;
-    }
-
-    Node* getMaximum(Node* origin = nullptr) {
-        return (origin && origin->right) ? getMaximum(origin->right) : origin;
-    }
-
 public:
     explicit BinarySearchTree() {
         binaryTree = new BinaryTree();
@@ -25,12 +16,13 @@ public:
 
 
     /* ADD METHODS */
-    bool add(int element) {
-        return add(element, getRoot());
+    virtual bool add(int element) {
+        return add(element, root);
     }
-    bool add(int element, Node* origin) {
+
+    virtual bool add(int element, Node* origin) {
         if (!origin) {
-            if (origin != this->getRoot())
+            if (origin != this->root)
                 return false;
             root = binaryTree->addRoot(element);
             return true;
@@ -52,35 +44,31 @@ public:
             origin->right = binaryTree->addRight(element, origin);
         }
 
-        checkBalance(origin);
         return true;
     }
 
-
     /* REMOVE METHODS */
-    bool remove(int target) {
+    virtual bool remove(int target) {
         Node* targetNode = this->getNode(target);
         if (!targetNode)
             return false;
 
-        Node* parent;
         try {
-            parent = targetNode->parent;
             binaryTree->remove(targetNode);
         }
         catch (const exception& exception) {
             Node* minOfRight = getMinimum(targetNode->right);
             targetNode->element = minOfRight->element;
-            parent = minOfRight->parent;
             binaryTree->remove(minOfRight);
         }
 
-        checkBalance(parent);
         return true;
     }
 
     int clearTree() {
-        return binaryTree->clearTree();
+        int countRemoved = binaryTree->clearTree();
+        this->root = binaryTree->getRoot();
+        return countRemoved;
     }
 
 
@@ -94,6 +82,14 @@ public:
 
         Node* nextNode = (element < origin->element) ? origin->left : origin->right;
         return (nextNode) ? getNode(element, nextNode) : nullptr;
+    }
+
+    Node* getMinimum(Node* origin = nullptr) {
+        return (origin && origin->left) ? getMinimum(origin->left) : origin;
+    }
+
+    Node* getMaximum(Node* origin = nullptr) {
+        return (origin && origin->right) ? getMaximum(origin->right) : origin;
     }
 
     int getPredecessor(int element) {
@@ -120,8 +116,14 @@ public:
         return node->parent->element;
     }
 
+    BinaryTree* getBinaryTree() {
+        return this->binaryTree;
+    }
     Node* getRoot() {
         return binaryTree->getRoot();
+    }
+    void setRoot(Node* newRoot) {
+        this->root = newRoot;
     }
 
     Node* getLeft(int element) {
@@ -162,59 +164,6 @@ public:
         this->binaryTree->zigRight(element);
     }
 
-    bool restructure(int gp) {
-        return restructure(getNode(gp));
-    }
-    bool restructure(Node* gp) {
-        // validate grandparent
-        int gpBalanceFactor = gp->getBalanceFactor();
-        if (std::abs(gpBalanceFactor) < 2)
-            return false;
-
-        // find parent
-        bool parentIsRight = gpBalanceFactor <= 0;
-        Node* parent = (parentIsRight) ? gp->right : gp->left;
-
-        // find child
-        int parentBalanceFactor = parent->getBalanceFactor();
-        Node* child;
-        if (parentIsRight)
-            child = parentBalanceFactor > 0 ? parent->left : parent->right;
-        else
-            child = parentBalanceFactor < 0 ? parent->right : parent->left;
-        bool childIsRight = parent->right == child;
-
-        // restructure
-        if (parentIsRight) {
-            if (childIsRight) {
-                cout << "Zig Left" << endl;
-                zigLeft(parent);
-            } else {
-                cout << "Zigzag Left" << endl;
-                zigRight(child);
-                zigLeft(child);
-            }
-        } else {
-            if (!childIsRight) {
-                cout << "Zig Right" << endl;
-                zigRight(parent);
-            } else {
-                cout << "Zigzag Right" << endl;
-                zigLeft(child);
-                zigRight(child);
-            }
-        }
-
-        return true;
-    }
-
-    void checkBalance(Node* startNode) {
-        while (startNode != nullptr) {
-            if (std::abs(startNode->getBalanceFactor()) > 1)
-                restructure(startNode);
-            startNode = startNode->parent;
-        }
-    }
 
     /* TRAVERSAL METHODS  */
     void inorderTraversal() {

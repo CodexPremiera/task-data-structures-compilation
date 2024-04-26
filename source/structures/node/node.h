@@ -1,7 +1,3 @@
-//
-// Created by Florabel Comandao on 12/14/2023.
-//
-
 #ifndef THE_FINALS_REVIEW_NODE_H
 #define THE_FINALS_REVIEW_NODE_H
 

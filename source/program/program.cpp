@@ -1,7 +1,3 @@
-//
-// Created by Florabel Comandao on 12/14/2023.
-//
-
 #include "program.h"
 
 using namespace std;
@@ -44,6 +40,8 @@ Program::Program() {
 
     this->binaryTree = new BinaryTree();
     this->binarySearchTree = new BinarySearchTree();
+    this->avlTree = new AVLTree();
+    this->splayTree = new SplayTree();
 }
 
 
@@ -422,6 +420,8 @@ void Program::operateTree() {
     cout << "SELECT TREE TYPE" << endl
          << "[b] Binary Tree" << endl
          << "[s] Binary Search Tree" << endl
+         << "[a] AVL Tree" << endl
+         << "[l] Splay Tree" << endl
          << "-----" << endl;
 
     do {
@@ -437,6 +437,18 @@ void Program::operateTree() {
             case 's':
                 cout << endl << "BINARY SEARCH TREE OPERATIONS" << endl;
                 this->operateBinarySearchTree();
+                hasSelected = true;
+                break;
+
+            case 'a':
+                cout << endl << "AVL TREE OPERATIONS" << endl;
+                this->operateAVLTree();
+                hasSelected = true;
+                break;
+
+            case 'l':
+                cout << endl << "SPLAY TREE OPERATIONS" << endl;
+                this->operateSplayTree();
                 hasSelected = true;
                 break;
 
@@ -617,7 +629,7 @@ void Program::operateBinaryTree() {
 }
 
 void Program::operateBinarySearchTree() {
-    /*binarySearchTree->add(8);
+    binarySearchTree->add(8);
     binarySearchTree->add(4);
     binarySearchTree->add(12);
     binarySearchTree->add(2);
@@ -631,17 +643,7 @@ void Program::operateBinarySearchTree() {
     binarySearchTree->add(9);
     binarySearchTree->add(11);
     binarySearchTree->add(13);
-    binarySearchTree->add(15);*/
-
-    binarySearchTree->add(2);
-    binarySearchTree->add(1);
-    binarySearchTree->add(4);
-    binarySearchTree->add(3);
-    binarySearchTree->add(7);
-    binarySearchTree->add(6);
-    binarySearchTree->add(8);
-    binarySearchTree->add(5);
-    binarySearchTree->add(10);
+    binarySearchTree->add(15);
     
     char operation;
     int element, parent, position, count, size;
@@ -777,37 +779,6 @@ void Program::operateBinarySearchTree() {
                 }
                 break;
 
-            case 'z':
-                cin >> operation >> element;
-                switch (operation) {
-                    case 'l':
-                        try {
-                            binarySearchTree->zigLeft(element);
-                            cout << " Zig Left done on " << element << endl;
-                        } catch (const runtime_error& error) {
-                            cout << " Zig Left failed on " << element << endl;
-                        }
-                        break;
-                    case 'r':
-                        try {
-                            binarySearchTree->zigRight(element);
-                            cout << " Zig Right done on " << element << endl;
-                        } catch (const runtime_error& error) {
-                            cout << " Zig Right can't be done on " << element << endl;
-                        }
-                        break;
-                    case 't':
-                         if (binarySearchTree->restructure(element))
-                             cout << "Restructure done at " << element << endl;
-                         else
-                             cout << "Restructure failed at " << element << endl;
-                         break;
-                    default:
-                        cout << "Invalid operation! Try again;" << endl;
-                        break;
-                }
-                break;
-
             case 'p':
                 cin >> operation;
                 switch (operation) {
@@ -855,6 +826,469 @@ void Program::operateBinarySearchTree() {
 
     } while (operation != 'x');
 }
+
+
+void Program::operateAVLTree() {
+    avlTree->add(1);
+    avlTree->add(2);
+    avlTree->add(3);
+    avlTree->add(4);
+    avlTree->add(5);
+    avlTree->add(6);
+    avlTree->add(7);
+    avlTree->add(8);
+    avlTree->add(9);
+    avlTree->add(10);
+    avlTree->add(11);
+    avlTree->add(12);
+    avlTree->add(13);
+    avlTree->add(14);
+    avlTree->add(15);
+
+    char operation;
+    int element, parent, position, count, size;
+    Node* targetNode;
+
+    int* preorderArray = makePreorderArray();
+    int* postorderArray = makePostorderArray();
+
+    do {
+        cout << "Operation: ";
+        cin >> operation;
+
+        switch (operation) {
+            case 'g':
+                cin >> operation ;
+                switch (operation) {
+                    case 'n':
+                        cin >> element;
+                        targetNode = avlTree->getNode(element);
+
+                        if (targetNode)
+                            cout << "Element " << element << " is found in the avlTree." << endl;
+                        else
+                            cout << "Element " << element << " is not found in the avlTree." << endl;
+                        break;
+
+                    case 'l':
+                        cin >> element;
+                        targetNode = avlTree->getLeft(element);
+
+                        if (targetNode)
+                            cout << "Left child of " << element << " is " << targetNode->element << endl;
+                        else
+                            cout << "Element " << element << " has no left child" << endl;
+                        break;
+
+                    case 'r':
+                        cin >> element;
+                        targetNode = avlTree->getRight(element);
+
+                        if (targetNode)
+                            cout << "Right child of " << element << " is " << targetNode->element << endl;
+                        else
+                            cout << "Element " << element << " has no right child" << endl;
+                        break;
+
+                    case 's':
+                        cin >> element;
+                        targetNode = avlTree->getSibling(element);
+
+                        if (targetNode)
+                            cout << "Sibling node of " << element << " is " << targetNode->element << endl;
+                        else
+                            cout << "Element " << element << " has no sibling node" << endl;
+                        break;
+
+                    case 'c':
+                        count = avlTree->getSize();
+                        cout << "The avlTree has " << count << " elements." << endl;
+                        break;
+                    case 'd':
+                        cin >> element;
+                        count = avlTree->getDepth(element);
+                        cout << "Node of " << element << " has a depth of " << count << endl;
+                        break;
+                    case 'h':
+                        cin >> element;
+                        count = avlTree->getHeight(element);
+                        cout << "Node of " << element << " has a height of " << count << endl;
+                        break;
+                    case 'b':
+                        cin >> element;
+                        count = avlTree->getNode(element)->getBalanceFactor();
+                        cout << "The balance factor of " << element << " is " << count << endl;
+                        break;
+
+                    case 'p':
+                        cin >> element;
+                        count = avlTree->getPredecessor(element);
+                        cout << "Predecessor of " << element << " is " << count << endl;
+                        break;
+                    case 'u':
+                        cin >> element;
+                        count = avlTree->getSuccessor(element);
+                        cout << "Successor of " << element << " is " << count << endl;
+                        break;
+
+                    default:
+                        cout << "Invalid operation! Try again;" << endl;
+                        break;
+                }
+
+                break;
+
+
+            case '+':
+            case 'a':
+                cin >> element;
+                if (avlTree->add(element))
+                    cout << "Element " << element << " is added." << endl;
+                else
+                    cout << "Element " << element << " is not added." << endl;
+                break;
+
+            case '-':
+                cin >> element;
+                try {
+                    avlTree->remove(element);
+                    cout << "Element " << element << " is removed." << endl;
+                } catch (const exception& exception) {
+                    cout << "Element " << element << " is not removed." << endl;
+                }
+                break;
+            case 'r':
+                cin >> operation;
+                switch (operation) {
+                    case 'e':
+                        cin >> element;
+                        try {
+                            avlTree->remove(element);
+                            cout << "Element " << element << " is removed." << endl;
+                        } catch (const exception& exception) {
+                            cout << "Element " << element << " is not removed." << endl;
+                        }
+                        break;
+                    case 'A':
+                        count = avlTree->clearTree();
+                        cout << "All " << count << " elements removed." << endl << endl;
+                        break;
+                    default:
+                        cout << "Invalid operation! Try again;" << endl;
+                        break;
+                }
+                break;
+
+            case 'z':
+                cin >> operation >> element;
+                switch (operation) {
+                    case 'l':
+                        try {
+                            avlTree->zigLeft(element);
+                            cout << " Zig Left done on " << element << endl;
+                        } catch (const runtime_error& error) {
+                            cout << " Zig Left failed on " << element << endl;
+                        }
+                        break;
+                    case 'r':
+                        try {
+                            avlTree->zigRight(element);
+                            cout << " Zig Right done on " << element << endl;
+                        } catch (const runtime_error& error) {
+                            cout << " Zig Right can't be done on " << element << endl;
+                        }
+                        break;
+                    case 't':
+                        if (avlTree->restructure(element))
+                            cout << "Restructure done at " << element << endl;
+                        else
+                            cout << "Restructure failed at " << element << endl;
+                        break;
+                    default:
+                        cout << "Invalid operation! Try again;" << endl;
+                        break;
+                }
+                break;
+
+            case 'p':
+                cin >> operation;
+                switch (operation) {
+                    case 'r':
+                        avlTree->preorderTraversal();
+                        break;
+                    case 'o':
+                        avlTree->postorderTraversal();
+                        break;
+                    case 'i':
+                        avlTree->inorderTraversal();
+                        break;
+                    case 'b':
+                        avlTree->breadthFirstTraversal();
+                        break;
+                    default:
+                        cout << "Invalid operation! Try again;" << endl;
+                        break;
+                }
+                break;
+
+            case 'c':
+                cin >> operation;
+                switch (operation) {
+                    case 'r':
+                        avlTree->convertPreorder(preorderArray, 7);
+                        break;
+                    case 'o':
+                        avlTree->convertPostorder(postorderArray, 7);
+                        break;
+                    default:
+                        cout << "Invalid operation! Try again;" << endl;
+                        break;
+                }
+                break;
+
+            case 'x':
+                cout << "exiting...";
+                break;
+
+            default:
+                cout << "Invalid operation! Try again;" << endl;
+                break;
+        }
+
+    } while (operation != 'x');
+}
+
+
+void Program::operateSplayTree() {
+    splayTree->add(1);
+    splayTree->add(2);
+    splayTree->add(3);
+    splayTree->add(4);
+    splayTree->add(5);
+    splayTree->add(6);
+    splayTree->add(7);
+    splayTree->add(8);
+    splayTree->add(9);
+    splayTree->add(10);
+    splayTree->add(11);
+    splayTree->add(12);
+    splayTree->add(13);
+    splayTree->add(14);
+    splayTree->add(15);
+
+    char operation;
+    int element, parent, position, count, size;
+    Node* targetNode;
+
+    int* preorderArray = makePreorderArray();
+    int* postorderArray = makePostorderArray();
+
+    do {
+        cout << "Operation: ";
+        cin >> operation;
+
+        switch (operation) {
+            case 'g':
+                cin >> operation ;
+                switch (operation) {
+                    case 'n':
+                        cin >> element;
+                        targetNode = splayTree->getNode(element);
+
+                        if (targetNode)
+                            cout << "Element " << element << " is found in the splayTree." << endl;
+                        else
+                            cout << "Element " << element << " is not found in the splayTree." << endl;
+                        break;
+
+                    case 'l':
+                        cin >> element;
+                        targetNode = splayTree->getLeft(element);
+
+                        if (targetNode)
+                            cout << "Left child of " << element << " is " << targetNode->element << endl;
+                        else
+                            cout << "Element " << element << " has no left child" << endl;
+                        break;
+
+                    case 'r':
+                        cin >> element;
+                        targetNode = splayTree->getRight(element);
+
+                        if (targetNode)
+                            cout << "Right child of " << element << " is " << targetNode->element << endl;
+                        else
+                            cout << "Element " << element << " has no right child" << endl;
+                        break;
+
+                    case 's':
+                        cin >> element;
+                        targetNode = splayTree->getSibling(element);
+
+                        if (targetNode)
+                            cout << "Sibling node of " << element << " is " << targetNode->element << endl;
+                        else
+                            cout << "Element " << element << " has no sibling node" << endl;
+                        break;
+
+                    case 'c':
+                        count = splayTree->getSize();
+                        cout << "The splayTree has " << count << " elements." << endl;
+                        break;
+                    case 'd':
+                        cin >> element;
+                        count = splayTree->getDepth(element);
+                        cout << "Node of " << element << " has a depth of " << count << endl;
+                        break;
+                    case 'h':
+                        cin >> element;
+                        count = splayTree->getHeight(element);
+                        cout << "Node of " << element << " has a height of " << count << endl;
+                        break;
+                    case 'b':
+                        cin >> element;
+                        count = splayTree->getNode(element)->getBalanceFactor();
+                        cout << "The balance factor of " << element << " is " << count << endl;
+                        break;
+
+                    case 'p':
+                        cin >> element;
+                        count = splayTree->getPredecessor(element);
+                        cout << "Predecessor of " << element << " is " << count << endl;
+                        break;
+                    case 'u':
+                        cin >> element;
+                        count = splayTree->getSuccessor(element);
+                        cout << "Successor of " << element << " is " << count << endl;
+                        break;
+
+                    default:
+                        cout << "Invalid operation! Try again;" << endl;
+                        break;
+                }
+
+                break;
+
+
+            case '+':
+            case 'a':
+                cin >> element;
+                if (splayTree->add(element))
+                    cout << "Element " << element << " is added." << endl;
+                else
+                    cout << "Element " << element << " is not added." << endl;
+                break;
+
+            case '-':
+                cin >> element;
+                try {
+                    splayTree->remove(element);
+                    cout << "Element " << element << " is removed." << endl;
+                } catch (const exception& exception) {
+                    cout << "Element " << element << " is not removed." << endl;
+                }
+                break;
+            case 'r':
+                cin >> operation;
+                switch (operation) {
+                    case 'e':
+                        cin >> element;
+                        try {
+                            splayTree->remove(element);
+                            cout << "Element " << element << " is removed." << endl;
+                        } catch (const exception& exception) {
+                            cout << "Element " << element << " is not removed." << endl;
+                        }
+                        break;
+                    case 'A':
+                        count = splayTree->clearTree();
+                        cout << "All " << count << " elements removed." << endl << endl;
+                        break;
+                    default:
+                        cout << "Invalid operation! Try again;" << endl;
+                        break;
+                }
+                break;
+
+            case 'z':
+                cin >> operation >> element;
+                switch (operation) {
+                    case 'l':
+                        try {
+                            splayTree->zigLeft(element);
+                            cout << " Zig Left done on " << element << endl;
+                        } catch (const runtime_error& error) {
+                            cout << " Zig Left failed on " << element << endl;
+                        }
+                        break;
+                    case 'r':
+                        try {
+                            splayTree->zigRight(element);
+                            cout << " Zig Right done on " << element << endl;
+                        } catch (const runtime_error& error) {
+                            cout << " Zig Right can't be done on " << element << endl;
+                        }
+                        break;
+                    case 't':
+                        if (splayTree->restructure(element))
+                            cout << "Restructure done at " << element << endl;
+                        else
+                            cout << "Restructure failed at " << element << endl;
+                        break;
+                    default:
+                        cout << "Invalid operation! Try again;" << endl;
+                        break;
+                }
+                break;
+
+            case 'p':
+                cin >> operation;
+                switch (operation) {
+                    case 'r':
+                        splayTree->preorderTraversal();
+                        break;
+                    case 'o':
+                        splayTree->postorderTraversal();
+                        break;
+                    case 'i':
+                        splayTree->inorderTraversal();
+                        break;
+                    case 'b':
+                        splayTree->breadthFirstTraversal();
+                        break;
+                    default:
+                        cout << "Invalid operation! Try again;" << endl;
+                        break;
+                }
+                break;
+
+            case 'c':
+                cin >> operation;
+                switch (operation) {
+                    case 'r':
+                        splayTree->convertPreorder(preorderArray, 7);
+                        break;
+                    case 'o':
+                        splayTree->convertPostorder(postorderArray, 7);
+                        break;
+                    default:
+                        cout << "Invalid operation! Try again;" << endl;
+                        break;
+                }
+                break;
+
+            case 'x':
+                cout << "exiting...";
+                break;
+
+            default:
+                cout << "Invalid operation! Try again;" << endl;
+                break;
+        }
+
+    } while (operation != 'x');
+}
+
 
 void Program::operateHeap() {
     char operation;

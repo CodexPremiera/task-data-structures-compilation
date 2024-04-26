@@ -1,7 +1,3 @@
-//
-// Created by Florabel Comandao on 12/14/2023.
-//
-
 #ifndef THE_FINALS_REVIEW_PROGRAM_H
 #define THE_FINALS_REVIEW_PROGRAM_H
 
@@ -17,6 +13,8 @@
 
 #include "../tree/binary_tree.h"
 #include "../tree/binary_search_tree.h"
+#include "../tree/avl_tree.h"
+#include "../tree/splay_tree.h"
 #include "../tree/heap.h"
 
 
@@ -27,6 +25,8 @@ class Program {
     IntDeque* deque;
     BinaryTree* binaryTree;
     BinarySearchTree* binarySearchTree;
+    AVLTree* avlTree;
+    SplayTree* splayTree;
     Heap* heap;
 
 private:
@@ -44,6 +44,8 @@ public:
     void operateTree();
     void operateBinaryTree();
     void operateBinarySearchTree();
+    void operateAVLTree();
+    void operateSplayTree();
     void operateHeap();
 };
 
