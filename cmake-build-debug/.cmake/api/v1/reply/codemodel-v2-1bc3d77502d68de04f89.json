@@ -1,0 +1,60 @@
+{
+	"configurations" : 
+	[
+		{
+			"directories" : 
+			[
+				{
+					"build" : ".",
+					"jsonFile" : "directory-.-Debug-d0094a50bb2071803777.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.24"
+					},
+					"projectIndex" : 0,
+					"source" : ".",
+					"targetIndexes" : 
+					[
+						0
+					]
+				}
+			],
+			"name" : "Debug",
+			"projects" : 
+			[
+				{
+					"directoryIndexes" : 
+					[
+						0
+					],
+					"name" : "The_Finals_Review",
+					"targetIndexes" : 
+					[
+						0
+					]
+				}
+			],
+			"targets" : 
+			[
+				{
+					"directoryIndex" : 0,
+					"id" : "The_Finals_Review::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-The_Finals_Review-Debug-b2e06df40882ea2b24ea.json",
+					"name" : "The_Finals_Review",
+					"projectIndex" : 0
+				}
+			]
+		}
+	],
+	"kind" : "codemodel",
+	"paths" : 
+	{
+		"build" : "D:/PremieraAlpha/College/2nd_Year-Second_Semester/CS244-Design_Analysis_of_Algorithms/Lesson_02-Data_Structures_Compilation/cmake-build-debug",
+		"source" : "D:/PremieraAlpha/College/2nd_Year-Second_Semester/CS244-Design_Analysis_of_Algorithms/Lesson_02-Data_Structures_Compilation"
+	},
+	"version" : 
+	{
+		"major" : 2,
+		"minor" : 6
+	}
+}
