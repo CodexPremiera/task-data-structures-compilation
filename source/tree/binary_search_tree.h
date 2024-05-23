@@ -123,23 +123,15 @@ public:
         return binaryTree->getRoot();
     }
     void setRoot(Node* newRoot) {
+        binaryTree->setRoot(newRoot);
         this->root = newRoot;
-    }
-
-    Node* getLeft(int element) {
-        return binaryTree->getLeft(this->getNode(element));
-    }
-
-    Node* getRight(int element) {
-        return binaryTree->getRight(this->getNode(element));
-    }
-
-    Node* getSibling(int element) {
-        return binaryTree->getSibling(this->getNode(element));
     }
 
     int getSize() {
         return binaryTree->getSize();
+    }
+    void setSize(int size) {
+        binaryTree->setSize(size);
     }
     int getDepth(int element) {
         return binaryTree->getDepth(element);

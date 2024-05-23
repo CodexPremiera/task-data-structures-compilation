@@ -672,7 +672,7 @@ void Program::operateBinarySearchTree() {
 
                     case 'l':
                         cin >> element;
-                        targetNode = binarySearchTree->getLeft(element);
+                        targetNode = binarySearchTree->getNode(element)->left;
 
                         if (targetNode)
                             cout << "Left child of " << element << " is " << targetNode->element << endl;
@@ -682,7 +682,7 @@ void Program::operateBinarySearchTree() {
 
                     case 'r':
                         cin >> element;
-                        targetNode = binarySearchTree->getRight(element);
+                        targetNode = binarySearchTree->getNode(element)->right;
 
                         if (targetNode)
                             cout << "Right child of " << element << " is " << targetNode->element << endl;
@@ -692,7 +692,7 @@ void Program::operateBinarySearchTree() {
 
                     case 's':
                         cin >> element;
-                        targetNode = binarySearchTree->getSibling(element);
+                        targetNode = binarySearchTree->getNode(element)->getSibling();
 
                         if (targetNode)
                             cout << "Sibling node of " << element << " is " << targetNode->element << endl;
@@ -872,7 +872,7 @@ void Program::operateAVLTree() {
 
                     case 'l':
                         cin >> element;
-                        targetNode = avlTree->getLeft(element);
+                        targetNode = avlTree->getNode(element)->left;
 
                         if (targetNode)
                             cout << "Left child of " << element << " is " << targetNode->element << endl;
@@ -882,7 +882,7 @@ void Program::operateAVLTree() {
 
                     case 'r':
                         cin >> element;
-                        targetNode = avlTree->getRight(element);
+                        targetNode = avlTree->getNode(element)->right;
 
                         if (targetNode)
                             cout << "Right child of " << element << " is " << targetNode->element << endl;
@@ -892,7 +892,7 @@ void Program::operateAVLTree() {
 
                     case 's':
                         cin >> element;
-                        targetNode = avlTree->getSibling(element);
+                        targetNode = avlTree->getNode(element)->getSibling();
 
                         if (targetNode)
                             cout << "Sibling node of " << element << " is " << targetNode->element << endl;
@@ -1064,7 +1064,7 @@ void Program::operateSplayTree() {
     splayTree->add(2);
     splayTree->add(3);
     splayTree->add(4);
-    splayTree->add(5);
+    /*splayTree->add(5);
     splayTree->add(6);
     splayTree->add(7);
     splayTree->add(8);
@@ -1074,7 +1074,9 @@ void Program::operateSplayTree() {
     splayTree->add(12);
     splayTree->add(13);
     splayTree->add(14);
-    splayTree->add(15);
+    splayTree->add(15);*/
+
+    splayTree->inorderTraversal();
 
     char operation;
     int element, parent, position, count, size;
@@ -1093,9 +1095,9 @@ void Program::operateSplayTree() {
                 switch (operation) {
                     case 'n':
                         cin >> element;
-                        targetNode = splayTree->getNode(element);
+                        targetNode = splayTree->search(element);
 
-                        if (targetNode)
+                        if (targetNode->element == element)
                             cout << "Element " << element << " is found in the splayTree." << endl;
                         else
                             cout << "Element " << element << " is not found in the splayTree." << endl;
@@ -1103,7 +1105,7 @@ void Program::operateSplayTree() {
 
                     case 'l':
                         cin >> element;
-                        targetNode = splayTree->getLeft(element);
+                        targetNode = splayTree->getNode(element)->left;
 
                         if (targetNode)
                             cout << "Left child of " << element << " is " << targetNode->element << endl;
@@ -1113,7 +1115,7 @@ void Program::operateSplayTree() {
 
                     case 'r':
                         cin >> element;
-                        targetNode = splayTree->getRight(element);
+                        targetNode = splayTree->getNode(element)->right;
 
                         if (targetNode)
                             cout << "Right child of " << element << " is " << targetNode->element << endl;
@@ -1123,7 +1125,7 @@ void Program::operateSplayTree() {
 
                     case 's':
                         cin >> element;
-                        targetNode = splayTree->getSibling(element);
+                        targetNode = splayTree->getNode(element)->getSibling();
 
                         if (targetNode)
                             cout << "Sibling node of " << element << " is " << targetNode->element << endl;
@@ -1181,10 +1183,9 @@ void Program::operateSplayTree() {
 
             case '-':
                 cin >> element;
-                try {
-                    splayTree->remove(element);
+                if (splayTree->remove(element)) {
                     cout << "Element " << element << " is removed." << endl;
-                } catch (const exception& exception) {
+                } else {
                     cout << "Element " << element << " is not removed." << endl;
                 }
                 break;
@@ -1230,7 +1231,7 @@ void Program::operateSplayTree() {
                         }
                         break;
                     case 't':
-                        if (splayTree->restructure(element))
+                        if (splayTree->splay(element))
                             cout << "Restructure done at " << element << endl;
                         else
                             cout << "Restructure failed at " << element << endl;

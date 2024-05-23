@@ -91,7 +91,7 @@ public:
             child = parentBalanceFactor < 0 ? parent->right : parent->left;
         bool childIsRight = parent->right == child;
 
-        // restructure
+        // splay
         if (parentIsRight) {
             if (childIsRight) {
                 cout << "Zig Left" << endl;
