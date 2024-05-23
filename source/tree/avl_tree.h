@@ -7,6 +7,14 @@
 class AVLTree : public BinarySearchTree {
     BinaryTree* binaryTree;
 
+    void checkBalance(Node* startNode) {
+        while (startNode != nullptr) {
+            if (std::abs(startNode->getBalanceFactor()) > 1)
+                restructure(startNode);
+            startNode = startNode->parent;
+        }
+    }
+
 public:
     explicit AVLTree() {
         binaryTree = getBinaryTree();
@@ -113,13 +121,5 @@ public:
         }
 
         return true;
-    }
-
-    void checkBalance(Node* startNode) {
-        while (startNode != nullptr) {
-            if (std::abs(startNode->getBalanceFactor()) > 1)
-                restructure(startNode);
-            startNode = startNode->parent;
-        }
     }
 };

@@ -25,6 +25,9 @@ struct Node {
     Node* right;
     Node* parent;
 
+    bool isRed;
+    bool isDoubleBlack;
+
     int getDepth() {
         if (!parent)
             return 0;

@@ -15,6 +15,7 @@
 #include "../tree/binary_search_tree.h"
 #include "../tree/avl_tree.h"
 #include "../tree/splay_tree.h"
+#include "../tree/red_black_tree.h"
 #include "../tree/heap.h"
 
 
@@ -27,6 +28,7 @@ class Program {
     BinarySearchTree* binarySearchTree;
     AVLTree* avlTree;
     SplayTree* splayTree;
+    RedBlackTree* redBlackTree;
     Heap* heap;
 
 private:
@@ -46,6 +48,7 @@ public:
     void operateBinarySearchTree();
     void operateAVLTree();
     void operateSplayTree();
+    void operateRedBlackTree();
     void operateHeap();
 };
 

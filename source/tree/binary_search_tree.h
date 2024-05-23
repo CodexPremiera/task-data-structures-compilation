@@ -134,10 +134,10 @@ public:
         binaryTree->setSize(size);
     }
     int getDepth(int element) {
-        return binaryTree->getDepth(element);
+        return binaryTree->getNodeByElement(element)->getDepth();
     }
     int getHeight(int element) {
-        return binaryTree->getHeight(element);
+        return binaryTree->getNodeByElement(element)->getHeight();
     }
 
 

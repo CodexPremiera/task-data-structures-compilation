@@ -32,7 +32,7 @@ public:
         if (this->root)
             throw logic_error("Root already exists.");
 
-        this->root = new Node{element, nullptr, nullptr, nullptr};
+        this->root = new Node{element, nullptr, nullptr, nullptr, false};
         size++;
         return this->root;
     }
@@ -46,7 +46,7 @@ public:
         if (parent->left)
             throw logic_error("Left child already exists.");
 
-        parent->left = new Node{element, nullptr, nullptr, parent};
+        parent->left = new Node{element, nullptr, nullptr, parent, false};
         size++;
         return parent->left;
     }
@@ -60,7 +60,7 @@ public:
         if (parent->right)
             throw logic_error("Right child already exists.");
 
-        parent->right = new Node{element, nullptr, nullptr, parent};
+        parent->right = new Node{element, nullptr, nullptr, parent, false};
         size++;
         return parent->right;
     }
@@ -126,27 +126,6 @@ public:
         return this->root;
     }
 
-    Node* getLeft(int element) {
-        return getLeft(getNodeByElement(element));
-    }
-    Node* getLeft(Node* parent) {
-        return (parent) ? parent->left : nullptr;
-    }
-
-    Node* getRight(int element) {
-        return getRight(getNodeByElement(element));
-    }
-    Node* getRight(Node* parent) {
-        return (parent) ? parent->right : nullptr;
-    }
-
-    Node* getSibling(int element) {
-        return getSibling(getNodeByElement(element));
-    }
-    Node* getSibling(Node* target) {
-        return (target) ? target->getSibling() : nullptr;
-    }
-
     Node* getNodeByElement(int element) {
         return getNodeByElement(element, this->root);
     }
@@ -163,14 +142,6 @@ public:
 
     int getSize() {
         return this->size;
-    }
-
-    int getDepth(int element) {
-        return getNodeByElement(element)->getDepth();
-    }
-
-    int getHeight(int element) {
-        return getNodeByElement(element)->getHeight();
     }
 
 

@@ -42,6 +42,7 @@ Program::Program() {
     this->binarySearchTree = new BinarySearchTree();
     this->avlTree = new AVLTree();
     this->splayTree = new SplayTree();
+    this->redBlackTree = new RedBlackTree();
 }
 
 
@@ -422,6 +423,7 @@ void Program::operateTree() {
          << "[s] Binary Search Tree" << endl
          << "[a] AVL Tree" << endl
          << "[l] Splay Tree" << endl
+         << "[r] Red-Black Tree" << endl
          << "-----" << endl;
 
     do {
@@ -449,6 +451,12 @@ void Program::operateTree() {
             case 'l':
                 cout << endl << "SPLAY TREE OPERATIONS" << endl;
                 this->operateSplayTree();
+                hasSelected = true;
+                break;
+
+            case 'r':
+                cout << endl << "RED-BLACK TREE OPERATIONS" << endl;
+                this->operateRedBlackTree();
                 hasSelected = true;
                 break;
 
@@ -493,7 +501,7 @@ void Program::operateBinaryTree() {
 
                     case 'l':
                         cin >> element;
-                        targetNode = binaryTree->getLeft(element);
+                        targetNode = binaryTree->getNodeByElement(element)->left;
 
                         if (targetNode)
                             cout << "Left child of " << element << " is " << targetNode->element << endl;
@@ -503,7 +511,7 @@ void Program::operateBinaryTree() {
 
                     case 'r':
                         cin >> element;
-                        targetNode = binaryTree->getRight(element);
+                        targetNode = binaryTree->getNodeByElement(element)->right;
 
                         if (targetNode)
                             cout << "Right child of " << element << " is " << targetNode->element << endl;
@@ -513,7 +521,7 @@ void Program::operateBinaryTree() {
 
                     case 's':
                         cin >> element;
-                        targetNode = binaryTree->getSibling(element);
+                        targetNode = binaryTree->getNodeByElement(element)->getSibling();
 
                         if (targetNode)
                             cout << "Sibling node of " << element << " is " << targetNode->element << endl;
@@ -527,12 +535,12 @@ void Program::operateBinaryTree() {
                         break;
                     case 'd':
                         cin >> element;
-                        count = binaryTree->getDepth(element);
+                        count = binaryTree->getNodeByElement(element)->getDepth();
                         cout << "Node of " << element << " has a depth of " << count << endl;
                         break;
                     case 'h':
                         cin >> element;
-                        count = binaryTree->getHeight(element);
+                        count = binaryTree->getNodeByElement(element)->getHeight();
                         cout << "Node of " << element << " has a height of " << count << endl;
                         break;
 
@@ -1271,6 +1279,143 @@ void Program::operateSplayTree() {
                         break;
                     case 'o':
                         splayTree->convertPostorder(postorderArray, 7);
+                        break;
+                    default:
+                        cout << "Invalid operation! Try again;" << endl;
+                        break;
+                }
+                break;
+
+            case 'x':
+                cout << "exiting...";
+                break;
+
+            default:
+                cout << "Invalid operation! Try again;" << endl;
+                break;
+        }
+
+    } while (operation != 'x');
+}
+
+
+void Program::operateRedBlackTree() {
+    char operation;
+    int element, parent, position, count, size;
+    Node* targetNode;
+
+    redBlackTree->insert(1);
+    redBlackTree->insert(2);
+    redBlackTree->insert(3);
+    redBlackTree->insert(4);/*
+    redBlackTree->insert(5);
+    redBlackTree->insert(6);
+    redBlackTree->insert(7);
+    redBlackTree->insert(8);
+    redBlackTree->insert(9);*/
+
+    do {
+        cout << "Operation: ";
+        cin >> operation;
+
+        switch (operation) {
+            case 'g':
+                cin >> operation ;
+                switch (operation) {
+                    case 'n':
+                        cin >> element;
+                        targetNode = redBlackTree->getNode(element);
+
+                        if (targetNode)
+                            cout << "Element " << element << " is found in the binaryTree." << endl;
+                        else
+                            cout << "Element " << element << " is not found in the binaryTree." << endl;
+                        break;
+
+                    case 'l':
+                        cin >> element;
+                        targetNode = redBlackTree->getNode(element)->left;
+
+                        if (targetNode)
+                            cout << "Left child of " << element << " is " << targetNode->element << endl;
+                        else
+                            cout << "Element " << element << " has no left child" << endl;
+                        break;
+
+                    case 'r':
+                        cin >> element;
+                        targetNode = redBlackTree->getNode(element)->right;
+
+                        if (targetNode)
+                            cout << "Right child of " << element << " is " << targetNode->element << endl;
+                        else
+                            cout << "Element " << element << " has no right child" << endl;
+                        break;
+
+                    case 's':
+                        cin >> element;
+                        targetNode = redBlackTree->getNode(element)->getSibling();
+
+                        if (targetNode)
+                            cout << "Sibling node of " << element << " is " << targetNode->element << endl;
+                        else
+                            cout << "Element " << element << " has no sibling node" << endl;
+                        break;
+
+                    case 'c':
+                        count = redBlackTree->getSize();
+                        cout << "The Red Black Tree has " << count << " elements." << endl;
+                        break;
+                    case 'd':
+                        cin >> element;
+                        count = redBlackTree->getNode(element)->getDepth();
+                        cout << "Node of " << element << " has a depth of " << count << endl;
+                        break;
+                    case 'h':
+                        cin >> element;
+                        count = redBlackTree->getNode(element)->getHeight();
+                        cout << "Node of " << element << " has a height of " << count << endl;
+                        break;
+
+                    default:
+                        cout << "Invalid operation! Try again;" << endl;
+                        break;
+                }
+
+                break;
+
+
+            case '+':
+            case 'a':
+                cin >> element;
+                redBlackTree->insert(element);
+                break;
+
+
+            case '-':
+                cin >> element;
+                if (redBlackTree->remove(element)) {
+                    cout << "Element " << element << " is removed." << endl;
+                } else {
+                    cout << "Element " << element << " is not removed." << endl;
+                }
+                break;
+
+
+            case 'p':
+                cin >> operation;
+                switch (operation) {
+                    case 'r':
+                        redBlackTree->preorderTraversal();
+                        break;
+                    case 'o':
+                        redBlackTree->postorderTraversal();
+                        break;
+                    case 'i':
+                        redBlackTree->inorderReversedTraversal();
+                        break;
+                    case 'b':
+                        redBlackTree->breadthFirstTraversal();
                         break;
                     default:
                         cout << "Invalid operation! Try again;" << endl;
