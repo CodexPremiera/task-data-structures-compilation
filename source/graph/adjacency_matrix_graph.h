@@ -5,6 +5,7 @@
 
 #include <cstdlib>
 #include <iostream>
+#include <vector>
 
 class AdjacencyMatrixGraph : public Graph {
     int matrix[10][10]{};
@@ -223,6 +224,48 @@ public:
             s_edges[k] = s_edges[k + 1];
 
         num_edge--;
+    }
+
+
+    int minIndex(vector<int>& distances, vector<bool>& visited){
+        int min = 10000, index;
+        for(int i = 0; i < distances.size(); i++){
+            if(distances[i] < min && !visited[i]){
+                min = distances[i];
+                index = i;
+            }
+        }
+        return index;
+    }
+
+    int distance(char u, char v) {
+        // TODO returns the distance from vertex u to vertex v
+        vector<int> distance(num_vert, 10000);
+        vector<bool> visited(num_vert, false);
+        int indexOf;
+        for(indexOf = 0; indexOf < num_vert; indexOf++)
+            if(s_vertices[indexOf] == u)
+                break;
+
+        distance[indexOf] = 0;
+
+        for(int i = 0; i < num_vert - 1; i++){
+            int minimumIndex = minIndex(distance, visited);
+            visited[minimumIndex] = true;
+
+            for(int j = 0; j < num_vert; j++){
+                if(matrix[minimumIndex][j] && !visited[j]
+                   && distance[minimumIndex] + matrix[minimumIndex][j]
+                      < distance[j]){
+                    distance[j] = distance[minimumIndex] +
+                                  matrix[minimumIndex][j];
+                }
+            }
+        }
+        for(int i = 0; i < num_vert; i++)
+            if(s_vertices[i] == v)
+                return distance[i] != 10000 ? distance[i] : -1;
+        return -1;
     }
 
 
