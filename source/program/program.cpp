@@ -43,6 +43,9 @@ Program::Program() {
     this->avlTree = new AVLTree();
     this->splayTree = new SplayTree();
     this->redBlackTree = new RedBlackTree();
+
+    this->adjacencyMatrixGraph = new AdjacencyMatrixGraph();
+    this->adjacencyListGraph = new AdjacencyListGraph();
 }
 
 
@@ -1488,4 +1491,168 @@ void Program::operateHeap() {
         }
 
     } while (operation != 'x');
-}; 
+};
+
+void Program::operateGraph() {
+    char operation;
+    bool hasSelected = false;
+    cout << "SELECT GRAPH TYPE" << endl
+         << "[m] Adjacency Matrix" << endl
+         << "[l] Adjacency List" << endl
+         << "-----" << endl;
+
+    do {
+        cout << "Enter choice: ";
+        cin >> operation;
+        switch (tolower(operation)) {
+            case 'm':
+                cout << endl << "ADJACENCY MATRIX GRAPH OPERATIONS" << endl;
+                this->operateCertainGraph(new AdjacencyMatrixGraph());
+                hasSelected = true;
+                break;
+
+            case 'l':
+                cout << endl << "ADJACENCY LIST GRAPH OPERATIONS" << endl;
+                this->operateCertainGraph(new AdjacencyListGraph());
+                hasSelected = true;
+                break;
+
+            default:
+                cout << "Please select between the choice." << endl << endl;
+                break;
+        }
+    } while (!hasSelected);
+}
+
+void Program::operateCertainGraph(Graph* graph) {
+    char op, v, x;
+    char orig, dest;
+    int e;
+
+    graph->insertVertex('a');
+    graph->insertVertex('b');
+    graph->insertVertex('c');
+    graph->insertVertex('d');
+
+    graph->insertEdge('a', 'c', 5);
+    graph->insertEdge('d', 'a', 1);
+    graph->insertEdge('b', 'a', 2);
+    graph->insertEdge('b', 'c', 3);
+    graph->insertEdge('c', 'd', 4);
+    graph->insertEdge('d', 'b', 6);
+
+    int num, i;
+    char* verts;
+    int* edges;
+    do {
+        cout << "Operation: ";
+        cin >> op;
+        switch (op) {
+            case 'v':
+                cin >> v;
+                graph->insertVertex(v);
+                break;
+            case 'e':
+                cin >> orig;
+                cin >> dest;
+                cin >> e;
+                graph->insertEdge(orig, dest, e);
+                break;
+            case 'q':
+                cout << graph->numVertices() << endl;
+                break;
+            case 'w':
+                cout << graph->numEdges() << endl;
+                break;
+            case 'V':
+                verts = graph->vertices();
+                num = graph->numVertices();
+                cout << "List of Vertices: ";
+                for (int i = 0; i < num; i++) {
+                    cout << verts[i];
+                    if (i < num-1) {
+                        cout << ", ";
+                    }
+                }
+                cout << endl;
+                break;
+            case 'E':
+                edges = graph->edges();
+                num = graph->numEdges();
+                cout << "List of Edges: ";
+                for (i = 0; i < num; i++) {
+                    cout << edges[i];
+                    if (i < num-1) {
+                        cout << ", ";
+                    }
+                }
+                cout << endl;
+                break;
+            case 'g':
+                cin >> orig;
+                cin >> dest;
+                cout << graph->getEdge(orig, dest) << endl;
+                break;
+            case 'n':
+                cin >> e;
+                verts = graph->endVertices(e);
+                cout << "Origin: " << verts[0] << " | Destination: " << verts[1] << endl;
+                break;
+            case 'l':
+                cin >> v;
+                cin >> e;
+                cout << graph->opposite(v, e) << endl;
+                break;
+            case 'o':
+                cin >> orig;
+                cout << graph->outDegree(orig) << endl;
+                break;
+            case 'i':
+                cin >> dest;
+                cout << graph->inDegree(dest) << endl;
+                break;
+            case 'O':
+                cin >> orig;
+                edges = graph->outgoingEdges(orig);
+                num = graph->outDegree(orig);
+                cout << "List of Outgoing Edges from " << orig << ": ";
+                for (i = 0; i < num; i++) {
+                    cout << edges[i];
+                    if (i < num-1) {
+                        cout << ", ";
+                    }
+                }
+                cout << endl;
+                break;
+            case 'I':
+                cin >> dest;
+                edges = graph->incomingEdges(dest);
+                num = graph->inDegree(dest);
+                cout << "List of Incoming Edges to " << dest << ": ";
+                for (i = 0; i < num; i++) {
+                    cout << edges[i];
+                    if (i < num-1) {
+                        cout << ", ";
+                    }
+                }
+                cout << endl;
+                break;
+            case 'r':
+                cin >> e;
+                cout << graph->removeEdge(e) << endl;
+                break;
+            case 'R':
+                cin >> v;
+                cout << graph->removeVertex(v) << endl;
+                break;
+            case 'p':
+                graph->print();
+                break;
+            case 'x':
+                cout << "Exiting...";
+                break;
+            default:
+                cout << "Invalid operation";
+        }
+    } while (op != 'x');
+}

@@ -7,4 +7,7 @@ add_executable(The_Finals_Review main.cpp source/structures/list/array_list.h so
         source/tree/avl_tree.h
         source/tree/splay_tree.h
         source/graph/graph.h
+        source/graph/adjacency_matrix_graph.h
+        source/graph/vertex.h
+        source/graph/edge.h
 )

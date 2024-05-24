@@ -13,6 +13,7 @@ int main() {
             << "[q] Queue" << endl
             << "[d] Deque" << endl
             << "[t] Tree" << endl
+            << "[g] Graph" << endl
             << "[h] Heap" << endl
             << "-----" << endl
             << "Enter choice: ";
@@ -38,6 +39,10 @@ int main() {
 
         case 't':
             program->operateTree();
+            break;
+
+        case 'g':
+            program->operateGraph();
             break;
 
         case 'h':

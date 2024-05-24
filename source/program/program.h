@@ -18,6 +18,11 @@
 #include "../tree/red_black_tree.h"
 #include "../tree/heap.h"
 
+#include "../graph/vertex.h"
+#include "../graph/edge.h"
+#include "../graph/graph.h"
+#include "../graph/adjacency_matrix_graph.h"
+#include "../graph/adjacency_list_graph.h"
 
 class Program {
     IntList* list;
@@ -30,6 +35,9 @@ class Program {
     SplayTree* splayTree;
     RedBlackTree* redBlackTree;
     Heap* heap;
+    AdjacencyMatrixGraph* adjacencyMatrixGraph;
+    AdjacencyListGraph* adjacencyListGraph;
+
 
 private:
     int* makePreorderArray();
@@ -50,6 +58,9 @@ public:
     void operateSplayTree();
     void operateRedBlackTree();
     void operateHeap();
+
+    void operateGraph();
+    void operateCertainGraph(Graph* graph);
 };
 
 
