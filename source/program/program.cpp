@@ -1307,10 +1307,10 @@ void Program::operateRedBlackTree() {
     int element, parent, position, count, size;
     Node* targetNode;
 
-    redBlackTree->insert(1);
+    redBlackTree->insert(1);/*
     redBlackTree->insert(2);
     redBlackTree->insert(3);
-    redBlackTree->insert(4);/*
+    redBlackTree->insert(4);
     redBlackTree->insert(5);
     redBlackTree->insert(6);
     redBlackTree->insert(7);

@@ -17,35 +17,62 @@ public:
 
     /* INSERTION METHODS */
     bool insert(int element) {
-        Node* newNode = new Node{element, nullptr, nullptr, nullptr, true};
+        return insert(element, root);
+    }
 
+    bool insert(int element, Node* origin) {
         if (!root) {
-            newNode->isRed = false;
-            root = newNode;
+            root = new Node{element, nullptr, nullptr, nullptr, false};
             size++;
             return true;
         }
 
-        return insert(newNode, root);
-    }
+        if (element == origin->element)
+            return false;
 
-    bool insert(Node* newNode, Node* origin) {
-        if (newNode->element < origin->element) {
+        if (element < origin->element) {
             if (origin->left)
-                return insert(newNode, origin->left);
-            origin->left = newNode;
-            newNode->parent = origin;
+                return insert(element, origin->left);
+            origin->left = new Node{element, nullptr, nullptr, origin, true};
+            checkAddViolation(origin->left);
         }
         else {
             if (origin->right)
-                return insert(newNode, origin->right);
-            origin->right = newNode;
-            newNode->parent = origin;
+                return insert(element, origin->right);
+            origin->right = new Node{element, nullptr, nullptr, origin, true};
+            checkAddViolation(origin->right);
         }
 
         size++;
-        return checkViolation(newNode);
+        return true;
     }
+
+    bool checkAddViolation(Node* targetNode) {
+        if (targetNode == root)
+            return true;
+
+        Node* parentNode = targetNode->parent;
+        if(!parentNode->isRed || !targetNode->isRed)
+            return checkAddViolation(targetNode->parent);
+
+        Node* gpNode = parentNode->parent;
+        Node* uncleNode = (gpNode->left == parentNode) ? gpNode->right : gpNode->left;
+
+        if (uncleNode == nullptr || !uncleNode->isRed) { // if black uncle, restructure new node
+            cout << "INSERTION Violation: Case 1" << endl;
+            restructure(targetNode);
+        }
+        else { // if red uncle, recolor
+            cout << "INSERTION Violation: Case 2" << endl;
+            if (gpNode != root)
+                gpNode->isRed = true;
+            parentNode->isRed = false;
+            uncleNode->isRed = false;
+        }
+
+        return checkAddViolation(targetNode);
+    }
+
 
     /* DELETION METHODS */
     bool remove(int target) {
@@ -53,45 +80,100 @@ public:
         if (!targetNode)
             return false;
 
-        try {
-            remove(targetNode);
+        return remove(targetNode);
+    }
+
+    bool remove (Node* targetNode) {
+        // at some point, node is not found
+        if (!targetNode) {
+            cout << "Cannot remove a null node.";
+            return false;
         }
-        catch (const exception& exception) {
+
+        // removing a full node
+        if (targetNode->left && targetNode->right) {
             Node* minOfRight = getMinimum(targetNode->right);
             targetNode->element = minOfRight->element;
-            remove(minOfRight);
+            return remove(minOfRight);
+        }
+
+        Node* parent = targetNode->parent;
+        Node* child = (targetNode->left) ? targetNode->left : targetNode->right;
+
+        // removing red node or black node with red child
+        if (targetNode->isRed || child != nullptr && child->isRed) {
+            deleteNode(targetNode, parent, child);
+            return true;
+        }
+
+        // removing black nodes with black child
+        Node* sibling = parent->left == targetNode ? parent->right : parent->left;
+        Node* xNephew = nullptr;
+        if (sibling != nullptr) {
+           if (sibling->isRight())
+               xNephew = sibling->left && sibling->left->isRed ? sibling->left : sibling->right;
+           else
+               xNephew = sibling->right && sibling->right->isRed ? sibling->right : sibling->left;
+        }
+        deleteNode(targetNode, parent, child);
+
+        // case 3: sibling is red
+        if (sibling && sibling->isRed) {
+            cout << "case 3" << endl;
+            zig(sibling, parent->right == sibling);
+            sibling->isRed = false;
+            parent->isRed = true;
+            return true;
+        }
+
+        // case 2: sibling is null or sibling is black with no red child
+        if (!sibling || !xNephew || !xNephew->isRed) {
+            cout << "case 2" << endl;
+            Node* doubleBlack;
+
+            while (parent != root) {
+                if (sibling)
+                    sibling->isRed = true;
+
+                if (parent->isRed) {
+                    parent->isRed = false;
+                    break;
+                }
+
+                doubleBlack = parent;
+                parent = parent->parent;
+                sibling = doubleBlack->getSibling();
+            }
+        }
+
+        // case 1: sibling is black with a red child
+        else if (xNephew->isRed) {
+            cout << "case 1" << endl;
+
+            restructure(xNephew);
+            xNephew->isRed = sibling->isRed = false;
+            parent->parent->isRed = parent->parent != root && parent->isRed;
+            parent->isRed = false;
         }
 
         return true;
     }
 
-    bool remove(Node* targetNode) {
-        if (!targetNode) {
-            cout << "Cannot remove a null node.";
-            return false;
-        }
-        if (targetNode->left && targetNode->right)
-            throw logic_error("Cannot remove a full node.");
-
-        Node* parent = targetNode->parent;
-        Node* child = (targetNode->left) ? targetNode->left : targetNode->right;
-
+    void deleteNode(Node* targetNode, Node* parent, Node* child) {
         if (targetNode == this->root)
             this->root = child;
-        else if (parent->left == targetNode)
+        else if (targetNode == parent->left)
             parent->left = child;
         else
             parent->right = child;
 
-        if (child)
+        if (child) {
             child->parent = parent;
-
-
-
+            child->isRed = false;
+        }
 
         delete targetNode;
         size--;
-        return true;
     }
 
 
@@ -117,34 +199,6 @@ public:
 
     int getSize() {
         return this->size;
-    }
-
-
-
-    bool checkViolation(Node* newNode) {
-        if (newNode == root)
-            return true;
-
-        Node* parentNode = newNode->parent;
-        if(!parentNode->isRed || !newNode->isRed)
-            return checkViolation(newNode->parent);
-
-        Node* gpNode = parentNode->parent;
-        Node* uncleNode = (gpNode->left == parentNode) ? gpNode->right : gpNode->left;
-
-        if (uncleNode == nullptr || !uncleNode->isRed) { // if black uncle, restructure
-            cout << "INSERTION Violation: Case 1" << endl;
-            restructure(newNode);
-        }
-        else { // if red uncle, recolor
-            cout << "INSERTION Violation: Case 2" << endl;
-            if (gpNode != root)
-                gpNode->isRed = true;
-            parentNode->isRed = false;
-            uncleNode->isRed = false;
-        }
-
-        return checkViolation(newNode);
     }
 
 
